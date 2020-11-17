@@ -1,12 +1,12 @@
 //  spreads the console operator.
 const { log, clear, dir } = console;
-// CHILD CLASS
+// DATA CLASS
 class MenuItem {
   // Function to make IDs do not panic about this one it makes random numbers.
   static uuidv4() {
-    return 'xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx'.replace(/[x]/g, function (c) {
+    return "xxxxxxxx-xxxx-xxxx-xxx-xxxxxxxxxxxx".replace(/[x]/g, function (c) {
       let r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8;
+        v = c == "x" ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
   }
@@ -24,13 +24,13 @@ class MenuItem {
   }
 }
 
-// PARENT CLASS
+// APPLICATION CLASS
 class Menu {
   #items = []; // Now a private field, so you can't tamper with it from outside this class
   constructor(itemsDataArray = []) {
     if (!Array.isArray(itemsDataArray)) {
       throw new Error(
-        `Items must be an array. Received ${itemsDataArray} (${typeof itemsDataArray})`,
+        `Items must be an array. Received ${itemsDataArray} (${typeof itemsDataArray})`
       );
     }
     // loop through the array that gets passed as an argument and for every item inside, create a new instance of the "MenuItem" class.
@@ -41,12 +41,12 @@ class Menu {
 
   // GET an item record's INDEX (by id)
   getItemIndex(id) {
-    if (typeof id === 'undefined') {
+    if (typeof id === "undefined") {
       throw new Error(`An id must be provided to getItemIndex`);
     }
-    if (typeof id !== 'string') {
+    if (typeof id !== "string") {
       throw new Error(
-        `The id provided to getItemIndex must be a string. Received ${id}(${typeof id})`,
+        `The id provided to getItemIndex must be a string. Received ${id}(${typeof id})`
       );
     }
     const index = this.#items.findIndex((item) => {
@@ -98,10 +98,10 @@ class Menu {
     // Check id is correct
     if (!id) {
       throw new Error(
-        'An id of the item you want to change must be provided to updateItem',
+        "An id of the item you want to change must be provided to updateItem"
       );
     }
-    if (typeof id !== 'string') {
+    if (typeof id !== "string") {
       throw new Error(`id must be a string. Received ${id}(${typeof id})`);
     }
 
@@ -144,52 +144,52 @@ class Menu {
 
 const rawData = [
   {
-    name: 'Acer.com',
-    address: '76 John Street London',
-    telephone: '01234666333',
-    email: 'acer@acer.com',
-    contacts: 'Jon Smith',
+    name: "Acer.com",
+    address: "76 John Street London",
+    telephone: "01234666333",
+    email: "acer@acer.com",
+    contacts: "Jon Smith",
   },
   {
-    name: 'Sprint.com',
-    address: '777 Manchester Road Leeds',
-    telephone: '04443666777',
-    email: 'alice@sprint.com',
-    contacts: 'Virginie Charter',
+    name: "Sprint.com",
+    address: "777 Manchester Road Leeds",
+    telephone: "04443666777",
+    email: "alice@sprint.com",
+    contacts: "Virginie Charter",
   },
   {
-    name: 'Marker.com',
-    address: '45 South Wales Road Bristol',
-    telephone: '06543888777',
-    email: 'mary@marker.com',
-    contacts: 'Marius Lucius',
+    name: "Marker.com",
+    address: "45 South Wales Road Bristol",
+    telephone: "06543888777",
+    email: "mary@marker.com",
+    contacts: "Marius Lucius",
   },
 ];
 
 // The above ^^ would be imported from another file. It is the raw programming. Now let's hook it up to the DOM
 
 const menu = new Menu(rawData);
-log('menu', menu);
+log("menu", menu);
 
 // launching the "app" by creating the parent class
 
-const mountNode = document.getElementById('listMount');
-const itemForm = document.forms['itemForm'];
+const mountNode = document.getElementById("listMount");
+const itemForm = document.forms["itemForm"];
 
-const noItemsHTML = '<p>No items to display</p>';
+const noItemsHTML = "<p>No items to display</p>";
 
 function render(items = menu.getAllItems(), domTargetNode = mountNode) {
   if (!items.length) {
     return (domTargetNode.innerHTML = noItemsHTML);
   }
 
-  const list = document.createElement('ul');
+  const list = document.createElement("ul");
 
   for (const item of items) {
-    const li = document.createElement('li');
-    li.classList.add('list-group-item');
+    const li = document.createElement("li");
+    li.classList.add("list-group-item");
     li.innerHTML = `
-    <span class="name">${item.name} ${''}</span><span class="price">${
+    <span class="name">${item.name} ${""}</span><span class="price">${
       item.email
     }
     </span>
@@ -203,7 +203,7 @@ function render(items = menu.getAllItems(), domTargetNode = mountNode) {
     </div>`;
     list.append(li);
   }
-  mountNode.innerHTML = '';
+  mountNode.innerHTML = "";
   mountNode.append(list);
 }
 // calling the function that was just written
@@ -211,29 +211,29 @@ render();
 // calls the function below
 updateUIMode();
 // switches between update and add mode on the form
-function updateUIMode(selector = '.action-type', text = 'Add') {
+function updateUIMode(selector = ".action-type", text = "Add") {
   const nodes = document.querySelectorAll(selector);
-  console.log('nodes', nodes, selector);
+  console.log("nodes", nodes, selector);
   for (const node of nodes) {
     node.textContent = text;
   }
 }
 // DOM things
-mountNode.addEventListener('click', (e) => {
+mountNode.addEventListener("click", (e) => {
   const { target } = e;
   if (!target) return;
-  const btn = target.closest('button');
+  const btn = target.closest("button");
   if (!btn) return;
 
   const id = btn.dataset.id;
 
-  const wasDeleteClick = btn.matches('.delete');
-  const wasUpdateClick = btn.matches('.update');
+  const wasDeleteClick = btn.matches(".delete");
+  const wasUpdateClick = btn.matches(".update");
 
   if (wasDeleteClick) {
     console.log(`id for deletion: ${id}`);
     menu.removeItem(id);
-    const item = target.closest('li');
+    const item = target.closest("li");
     const list = item.parentElement;
 
     item.remove();
@@ -243,28 +243,29 @@ mountNode.addEventListener('click', (e) => {
     }
   } else if (wasUpdateClick) {
     console.log(`id for update: ${id}`);
-    console.log('item', menu.getItem(id));
+    console.log("item", menu.getItem(id));
     populate(itemForm, menu.getItem(id));
-    updateUIMode(undefined, 'Update');
+    updateUIMode(undefined, "Update");
   }
 });
 
-itemForm.addEventListener('submit', (e) => {
+itemForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const data = serialize(itemForm);
-  data.contacts = data.contacts.split(',').map((item) => item.trim());
+  data.contacts = data.contacts.split(",").map((item) => item.trim());
   if (data._id) {
-    console.log('updating', data);
+    console.log("updating", data);
     // data.contacts = data.contacts.split(",").forEach((item) => item.trim());
     menu.updateItem(data._id, data);
     updateUIMode(); // Reset UI
   } else {
-    console.log('add data', data);
+    console.log("add data", data);
     delete data._id;
     // data.contacts = data.contacts.split(",").forEach((item) => item.trim());
     menu.addItem(data);
   }
-  itemForm.reset();
+  // itemForm.reset();
+  clearForm(itemForm);
   render();
 });
 
@@ -292,8 +293,8 @@ function populate(form, data) {
     let value = data[key];
 
     // Make any bad values an empty string
-    if (!value && typeof value !== 'number') {
-      value = '';
+    if (!value && typeof value !== "number") {
+      value = "";
     }
 
     // try to find element in the form
@@ -308,7 +309,7 @@ function populate(form, data) {
     const type = element.type || element[0].type;
 
     switch (type) {
-      case 'checkbox': {
+      case "checkbox": {
         // Here, value is an array of values to be spread across the checkboxes that make up this input. It's the value of the input as a whole, NOT the value of one checkbox.
         const values = Array.isArray(value) ? value : [value];
 
@@ -320,7 +321,7 @@ function populate(form, data) {
         }
         break;
       }
-      case 'select-multiple': {
+      case "select-multiple": {
         const values = Array.isArray(value) ? value : [value];
 
         for (let k = 0, len = element.options.length; k < len; k += 1) {
@@ -344,7 +345,7 @@ function populate(form, data) {
       default:
         // Special line to cope with tags being an array
         if (Array.isArray(value)) {
-          value = value.join(', ');
+          value = value.join(", ");
         }
         element.value = value;
         break;
@@ -366,8 +367,16 @@ function serialize(form) {
       }
     }
   }
-  console.log('data', data);
+  console.log("data", data);
   return data;
+}
+
+function clearForm(form) {
+  form.reset();
+  const hiddenInputs = form.querySelectorAll('input[type="hidden"]');
+  for (const input of hiddenInputs) {
+    input.value = "";
+  }
 }
 
 // // You can create objects alone
